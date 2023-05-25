@@ -1,17 +1,3 @@
-# Salesforce as Identity Provider - Service Provider Test App
-
-Author: [Enrico Murru](http://enree.co)
-
-Blog post: [[Salesforce / Heroku] Salesforce as Identity Provider and Heroku as Service Provider](http://blog.enree.co/2016/04/salesforce-heroku-salesforce-as.html)
-
-The following app can be deployed on Heroku to test SSO using SAML 2.0 with Salesforce as Identity Provider.
-
-
-## Deploy to Heroku
-
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
-
-
 ## Enable "My Domain" on your Salesforce ORG
 
 From **Setup > Domain Management > My Domain** enable My Domain on your org.
@@ -37,39 +23,6 @@ In **Web App Settings** set:
 * *Subject Type*: field used to match users (use User ID)
 * *Name ID Format*: format of the field used to match (e.g. urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified)
 * *Issuer*: leave your domain (e.g. https://blog-domain-dev-ed.my.salesforce.com)
-
-In **Custom Connected App Handler**:
-* *Apex Plugin Class*: link to a class that implements the Auth.ConnectedAppPlugin interface to extend the data sent to the Service Provider
-
-E.g.
-
-	global class SamlConnectedAppPlugin extends Auth.ConnectedAppPlugin{
-
-	    global override boolean authorize(Id userId, Id connectedAppId, boolean isAdminApproved) {
-	        User u = [select id, First_SAML_Login__c from User where id =: userId].get(0);
-			if(u.First_SAML_Login__c == null){
-	            u.First_SAML_Login__c = System.now();
-	            try{
-	                update u;
-	            }catch(exception e){
-	                System.debug('Exception:' + e.getMessage());
-	            }
-	        }
-	        return true;
-	    }
-	    
-	    //Return a user’s permission set assignments
-	    global override Map<String,String> customAttributes(Id userId, Map<String,String> formulaDefinedAttributes) {  
-			User u = [select id, Name, CommunityNickname from User where id =: userId];
-	        formulaDefinedAttributes.put('nickname',u.CommunityNickname);
-	        formulaDefinedAttributes.put('fullname',u.Name);
-	        return formulaDefinedAttributes;
-	    }
-	}
-
-This class extends the info sent after login by the *customAttributes()* method.
-On authorization request, sets a custom date to set the first login done with SAL.
-
 
 ## Service Provider Configuration
 

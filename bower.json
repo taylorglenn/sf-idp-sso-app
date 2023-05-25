@@ -1,11 +1,10 @@
 {
-  "name": "Salesforce as Identity Provider - Service Provider Test App",
+  "name": "instructor-automation",
   "version": "0.0.1",
-  "homepage": "https://github.com/enreeco/sf-idp-sso-app.git",
   "authors": [
-    "Enrico Murru <enrico.murru@gmail.com>"
+    "AMPP <SoftwareDevs@ampp.org>"
   ],
-  "description": "Test app to simulate SSO with SAML with Salesforce as Identity Provider",
+  "description": "Instructor Automation test of SSO with SAML with Salesforce as Identity Provider",
   "main": "app.js",
   "moduleType": [
     "node"

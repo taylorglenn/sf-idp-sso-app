@@ -20,7 +20,7 @@ module.exports = function (passport, config) {
 	  },
 	  function(profile, done) {
 	  	console.log(profile);
-		return done(null,
+			return done(null,
 			{
 				id : profile.nameID,
 				email : profile.email,
